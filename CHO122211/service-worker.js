@@ -2,8 +2,11 @@
 const CACHE_NAME = 'popi-cache-v1';
 const urlsToCache = [
 '/TEST-POPI/THE-POPI-TEST/index.html',
-'/TEST-POPI/THE-POPI-TEST/index.css',
-'/TEST-POPI/THE-POPI-TEST/index.js',
+
+'/TEST-POPI/THE-POPI-TEST/test-ser.html',
+'/TEST-POPI/THE-POPI-TEST/test-ser.css',
+'/TEST-POPI/THE-POPI-TEST/test-ser.js',
+
 
 '/TEST-POPI/THE-POPI-TEST/test-ch.html',
 '/TEST-POPI/THE-POPI-TEST/test-ch.css',
