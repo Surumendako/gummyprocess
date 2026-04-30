@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>TEST/テスト</title>
+  <link rel="stylesheet" href="test-ser.css">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#06bf0d">
+</head>
+
+<body>
+
+  <div class="gummy-rain" id="gummyRain"></div>
+
+  <h2 class="stage-title">ステージを選択してスタートを押しましょう。</h2>
+
+  <div class="stage-list">
+    <button class="stage-btn" data-stage="1"><span class="stage-num">ABC型不規則動詞1</span><span class="stage-desc">No.74〜No.84（過去形）</span></button>
+    <button class="stage-btn" data-stage="2"><span class="stage-num">ABC型不規則動詞2</span><span class="stage-desc">No.74〜No.84（過去分詞形）</span></button>
+    <button class="stage-btn" data-stage="3"><span class="stage-num">ABC型不規則動詞3</span><span class="stage-desc">No.84〜No.94（過去形）</span></button>
+    <button class="stage-btn" data-stage="4"><span class="stage-num">ABC型不規則動詞4</span><span class="stage-desc">No.84〜No.94（過去分詞形）</span></button>
+    <button class="stage-btn" data-stage="5"><span class="stage-num">AAB/ABA不規則動詞</span><span class="stage-desc">No.17〜No.20</span></button>
+    <button class="stage-btn" data-stage="6"><span class="stage-num">AAA不規則動詞</span><span class="stage-desc">No.1〜No.16</span></button>
+  </div>
+
+  <button class="gummy-btn start-btn" id="startBtn">
+    <img src="pic/start.png" alt="スタート">
+  </button>
+
+  <a href="test-ch.html" class="gummy-btn start-btn">
+    <img src="pic/quemo-check.png" alt="出題確認">
+  </a>
+  
+  <a href="index.html" class="gummy-btn start-btn">
+    <img src="pic/back.png" alt="戻る">
+  </a>
+
+
+
+  <script src="test-ser.js"></script>
+
+<script>
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("service-worker.js");
+    }
+</script>
+
+</body>
+</html>

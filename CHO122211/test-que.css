@@ -1,0 +1,436 @@
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+  margin: 0;
+  padding: 0;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+html, body {
+  height: 100dvh;
+  overflow: hidden;
+  touch-action: manipulation;
+}
+
+/* ============================================================
+   CSS変数
+   キーサイズは vw ベース（横幅の1/10）で自動スケール。
+   上下余白・フォントは dvh ベースで縦画面に合わせる。
+   ============================================================ */
+:root {
+  /* --- レイアウト --- */
+  --body-pad-h: 6px;          /* 左右余白（キー幅計算に使う） */
+  --body-pad-v: 6px;
+  --body-gap:   5px;
+
+  /* --- トップバー --- */
+  --topbar-h:       6dvh;     /* 画面高の6% */
+  --topbar-h-min:   44px;
+  --topbar-h-max:   64px;
+  --topbar-btn-img: 3.5dvh;   /* 画像の高さ */
+  --topbar-pad-h:   10px;
+
+  /* --- 問題エリア --- */
+  --question-pad-v: 1.5dvh;
+  --question-pad-h: 14px;
+  --question-gap:   1dvh;
+  --jpword-size:    clamp(18px, 2.8dvh, 32px);
+  --answer-h:       clamp(38px, 5.5dvh, 60px);
+  --answer-size:    clamp(17px, 2.4dvh, 28px);
+  --reveal-size:    clamp(14px, 2dvh, 22px);
+
+  /* --- ヒントボタン --- */
+  --assist-h:    clamp(34px, 4.5dvh, 50px);
+  --assist-w:    clamp(120px, 36vw, 180px);
+  --assist-size: clamp(13px, 1.8dvh, 18px);
+
+  /* --- 進捗バー --- */
+  --progress-h: clamp(6px, 1dvh, 10px);
+
+  /* --- キーボード --- */
+  --keyboard-pad-v: 1dvh;
+  --keyboard-pad-h: 4px;
+  --key-gap:        3px;       /* キー間隔 */
+  --key-radius:     8px;
+  --key-shadow:     3px;
+
+  /* アクションボタン行（消す・解答） */
+  --action-h:      clamp(40px, 6dvh, 58px);
+  --action-gap:    10px;
+  --action-radius: 12px;
+}
+
+/* ---------- iPhone SE / mini (〜374px) ---------- */
+@media (max-width: 374px) {
+  :root {
+    --body-pad-h: 4px;
+    --body-gap:   4px;
+    --key-gap:    2px;
+    --key-radius: 6px;
+    --topbar-h-min: 40px;
+  }
+}
+
+/* ---------- iPhone Plus / Max / 大画面 (428px〜) ---------- */
+@media (min-width: 428px) and (max-width: 767px) {
+  :root {
+    --body-pad-h: 8px;
+    --key-gap:    4px;
+    --key-radius: 9px;
+  }
+}
+
+/* ---------- iPad (768px〜) ---------- */
+@media (min-width: 768px) {
+  :root {
+    --body-pad-h: 20px;
+    --body-pad-v: 14px;
+    --body-gap:   10px;
+
+    --topbar-h-min: 56px;
+    --topbar-h-max: 72px;
+    --topbar-btn-img: 4dvh;
+    --topbar-pad-h: 18px;
+
+    --question-pad-v: 2dvh;
+    --question-pad-h: 20px;
+    --question-gap:   1.2dvh;
+    --jpword-size:    clamp(24px, 3.5dvh, 40px);
+    --answer-h:       clamp(48px, 7dvh, 72px);
+    --answer-size:    clamp(22px, 3dvh, 34px);
+    --reveal-size:    clamp(18px, 2.4dvh, 26px);
+
+    --assist-h:    clamp(42px, 5.5dvh, 58px);
+    --assist-w:    clamp(160px, 28vw, 220px);
+    --assist-size: clamp(16px, 2dvh, 22px);
+
+    --key-gap:     5px;
+    --key-radius:  12px;
+    --key-shadow:  4px;
+    --action-h:    clamp(52px, 7.5dvh, 72px);
+    --action-gap:  18px;
+    --action-radius: 16px;
+    --keyboard-pad-v: 1.2dvh;
+    --keyboard-pad-h: 6px;
+  }
+}
+
+/* ---------- iPad Pro / 大画面 (1024px〜) ---------- */
+@media (min-width: 1024px) {
+  :root {
+    --body-pad-h: 48px;
+    --key-gap:    7px;
+    --key-radius: 14px;
+    --key-shadow: 5px;
+    --action-gap: 24px;
+  }
+}
+
+/* ============================================================
+   ベーススタイル
+   ============================================================ */
+body {
+  font-family: "Hiragino Maru Gothic ProN", "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif;
+  background: linear-gradient(160deg, #d0f4ff 0%, #e8fbff 50%, #b8eeff 100%);
+  color: #005a7a;
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  padding: var(--body-pad-v) var(--body-pad-h);
+  gap: var(--body-gap);
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(circle at 20% 15%, rgba(100,220,255,0.22) 0%, transparent 40%),
+    radial-gradient(circle at 80% 10%, rgba(0,200,255,0.16) 0%, transparent 35%),
+    radial-gradient(circle at 55% 90%, rgba(80,230,220,0.14) 0%, transparent 35%),
+    radial-gradient(circle at 5%  70%, rgba(160,240,255,0.16) 0%, transparent 35%);
+  pointer-events: none;
+  z-index: 0;
+}
+body > * { position: relative; z-index: 1; }
+
+.gummy-rain,
+.top-image-wrapper { display: none; }
+
+/* ============================================================
+   トップバー
+   ============================================================ */
+.top-bar {
+  flex-shrink: 0;
+  height: clamp(var(--topbar-h-min), var(--topbar-h), var(--topbar-h-max));
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 var(--topbar-pad-h);
+  background: rgba(255,255,255,0.75);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 999px;
+  border: 1.5px solid rgba(100,220,255,0.5);
+  box-shadow: 0 3px 12px rgba(0,180,230,0.15);
+}
+
+/* ボタン画像サイズ：バーの高さに連動 */
+.top-bar img {
+  height: var(--topbar-btn-img);
+  width: auto;
+  cursor: pointer;
+  transition: transform 0.1s;
+}
+.top-bar img#retryBtn {
+  border: 2px solid #00c8f0;
+  border-radius: 999px;
+  padding: 4px 14px;
+  background: rgba(0,200,240,0.12);
+}
+.top-bar img#quitBtn {
+  border: 2px solid #00a8d8;
+  border-radius: 999px;
+  padding: 4px 14px;
+  background: rgba(0,168,216,0.12);
+}
+.top-bar img:active { transform: scale(0.88); }
+
+/* ============================================================
+   問題エリア
+   ============================================================ */
+.question {
+  flex-shrink: 0;
+  background: rgba(255,255,255,0.72);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-radius: 16px;
+  border: 1.5px solid rgba(100,220,255,0.4);
+  padding: var(--question-pad-v) var(--question-pad-h);
+  display: flex;
+  flex-direction: column;
+  gap: var(--question-gap);
+  box-shadow: 0 3px 12px rgba(0,180,230,0.12);
+}
+
+#jpWord {
+  font-size: var(--jpword-size);
+  font-weight: bold;
+  text-align: center;
+  color: #006080;
+  line-height: 1.2;
+}
+
+#answerReveal {
+  font-size: var(--reveal-size);
+  color: #ff01cc;
+  text-align: center;
+  opacity: 0;
+  transition: opacity 0.3s;
+  line-height: 1;
+}
+#answerReveal.show { opacity: 1; }
+
+/* 答え入力欄（div） */
+#answer {
+  width: 100%;
+  min-height: var(--answer-h);
+  font-size: var(--answer-size);
+  padding: 0 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  border: 2px solid rgba(0,190,230,0.5);
+  background: rgba(255,255,255,0.9);
+  font-weight: bold;
+  font-family: inherit;
+  box-shadow: inset 0 2px 6px rgba(0,160,210,0.08);
+  letter-spacing: 0.05em;
+}
+#answer .normal-chars { color: #007aaa; }
+#answer .hint-chars {
+  color: #00c0f0;
+  text-shadow: 0 0 8px rgba(0,200,240,0.5);
+  font-style: italic;
+}
+
+/* ============================================================
+   ヒントボタン
+   ============================================================ */
+#assistBtn {
+  flex-shrink: 0;
+  height: var(--assist-h);
+  width: var(--assist-w);
+  margin: 0 auto;
+  font-size: var(--assist-size);
+  font-weight: bold;
+  background: linear-gradient(135deg, #e0faff, #b8f0ff);
+  border: 2px solid #5dd8f5;
+  color: #006a8a;
+  border-radius: 999px;
+  cursor: pointer;
+  font-family: inherit;
+  box-shadow: 0 3px 0 #3bbedd;
+  transition: all 0.1s;
+}
+#assistBtn:active {
+  transform: translateY(3px);
+  box-shadow: none;
+}
+
+/* ============================================================
+   進捗バー
+   ============================================================ */
+.progress {
+  flex-shrink: 0;
+  height: var(--progress-h);
+  background: rgba(255,255,255,0.4);
+  border-radius: 999px;
+  overflow: hidden;
+}
+#progressBar {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #00d4ff, #00a8d8, #00e8c8);
+  border-radius: 999px;
+  transition: width 0.4s ease;
+}
+
+/* ============================================================
+   キーボード
+   キーの幅 = (画面幅 - 左右パディング×2 - キー間隔×9) ÷ 10
+   縦は flex:1 で残り全部を使い、justify-content:space-evenly で均等配置
+   ============================================================ */
+.keyboard {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  padding: var(--keyboard-pad-v) var(--keyboard-pad-h);
+  background: rgba(255,255,255,0.72);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-radius: 18px;
+  border: 1.5px solid rgba(100,220,255,0.35);
+  box-shadow: 0 3px 12px rgba(0,180,230,0.10);
+}
+
+.key-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--key-gap);
+}
+
+/* 通常キー（正方形、幅で高さも決まる） */
+.key-row img {
+  width: calc(
+    (100vw - var(--body-pad-h) * 2 - var(--keyboard-pad-h) * 2 - var(--key-gap) * 9) / 10
+  );
+  aspect-ratio: 1 / 1;
+  object-fit: contain;
+  background: rgba(255,255,255,0.92);
+  border-radius: var(--key-radius);
+  cursor: pointer;
+  -webkit-user-drag: none;
+  transition: transform 0.05s;
+}
+
+.key-row:nth-child(1) img { box-shadow: 0 var(--key-shadow) 0 rgba(0,190,230,0.55); }
+.key-row:nth-child(2) img { box-shadow: 0 var(--key-shadow) 0 rgba(0,210,210,0.60); }
+.key-row-letters    img { box-shadow: 0 var(--key-shadow) 0 rgba(80,220,255,0.55); }
+
+/* 消す・解答ボタン行 */
+.key-row-actions {
+  gap: var(--action-gap);
+}
+.key-row-actions img {
+  /* キーボード幅の約半分ずつ */
+  width: calc(
+    (100vw - var(--body-pad-h) * 2 - var(--keyboard-pad-h) * 2 - var(--action-gap)) / 2
+  );
+  max-width: 240px;
+  height: var(--action-h);
+  aspect-ratio: auto;
+  border-radius: var(--action-radius);
+  object-fit: contain;
+}
+.key-row-actions img:first-child {
+  background: rgba(220,240,248,0.9);
+  box-shadow: 0 var(--key-shadow) 0 #9ad0e8;
+}
+.key-row-actions img:last-child {
+  background: rgba(220,248,255,0.95);
+  border: 2px solid #50d0f0;
+  box-shadow: 0 var(--key-shadow) 0 #30b8e0;
+}
+
+.key-row img:active {
+  transform: translateY(var(--key-shadow));
+  box-shadow: none !important;
+}
+.keyboard img.assist-hide {
+  opacity: 0.2;
+  filter: grayscale(100%);
+}
+
+/* ============================================================
+   ステージ終了
+   ============================================================ */
+#stageEndArea {
+  display: none;
+  flex-shrink: 0;
+  text-align: center;
+}
+#stageEndArea img { width: 80px; margin: 6px; }
+
+/* ============================================================
+   正誤判定アニメ
+   ============================================================ */
+#judge {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 999;
+}
+#judge img {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 130px;
+  transform: translate(-50%, -50%) scale(0.5);
+  opacity: 0;
+}
+#judge img.show { animation: pop 0.65s forwards; }
+@keyframes pop {
+  0%   { opacity: 0; transform: translate(-50%,-50%) scale(0.3) rotate(-10deg); }
+  55%  { opacity: 1; transform: translate(-50%,-50%) scale(1.2) rotate(4deg); }
+  100% { opacity: 0; transform: translate(-50%,-50%) scale(1)   rotate(0deg); }
+}
+
+/* ============================================================
+   結果リスト
+   ============================================================ */
+.result-list {
+  max-height: 200px;
+  overflow-y: auto;
+  padding: 10px;
+  background: rgba(255,255,255,0.85);
+  border-radius: 14px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0,180,220,0.4) transparent;
+}
+.result-list::-webkit-scrollbar { width: 4px; }
+.result-list::-webkit-scrollbar-thumb {
+  background: rgba(0,180,220,0.4);
+  border-radius: 999px;
+}
+.result-item {
+  padding: 6px 0;
+  border-bottom: 1px solid rgba(0,180,220,0.2);
+  font-size: 14px;
+  color: #0080a0;
+}

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>POPI TEST</title>
+
+<h2 class="stage-title">ようこそ。テストへ</h2>
+
+<style>
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-user-select: none;
+    user-select: none;
+  }
+
+  html, body {
+    height: 100dvh;
+    overflow: hidden;
+  }
+
+  body {
+    font-family: "Hiragino Maru Gothic ProN", "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif;
+    background: linear-gradient(160deg, #d0f4ff 0%, #e8fbff 50%, #b8eeff 100%);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 48px;
+  }
+
+  /* 背景の光彩 */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(circle at 20% 15%, rgba(100,220,255,0.22) 0%, transparent 40%),
+      radial-gradient(circle at 80% 10%, rgba(0,200,255,0.16) 0%, transparent 35%),
+      radial-gradient(circle at 55% 90%, rgba(80,230,220,0.14) 0%, transparent 35%),
+      radial-gradient(circle at 5%  70%, rgba(160,240,255,0.16) 0%, transparent 35%);
+    pointer-events: none;
+    z-index: 0;
+  }
+  body > * { position: relative; z-index: 1; }
+
+  /* ===== タイトル ===== */
+  .title {
+    width: min(300px, 75vw);
+    filter: drop-shadow(0 6px 18px rgba(0,160,210,0.30));
+    animation: float 3s ease-in-out infinite;
+  }
+
+  /* ===== スタートボタン ===== */
+  .start {
+    width: min(200px, 55vw);
+    cursor: pointer;
+    filter: drop-shadow(0 8px 16px rgba(0,160,210,0.35));
+    transition: transform 0.12s;
+    animation: float 2.8s ease-in-out infinite;
+  }
+
+  .start:active {
+    transform: scale(0.92);
+    filter: drop-shadow(0 4px 8px rgba(0,160,210,0.25));
+  }
+
+  /* ===== ふわふわ ===== */
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50%       { transform: translateY(-7px); }
+  }
+</style>
+</head>
+
+<body>
+
+<img src="pic/TEST-rogo.png" alt="タイトル" class="title">
+<img src="pic/start.png"    alt="スタート" class="start"
+     onclick="location.href='test-ser.html'">
+
+</body>
+</html>

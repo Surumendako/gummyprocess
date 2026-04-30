@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>TEST/テスト *問題確認*</title>
+  <link rel="stylesheet" href="test-ch.css">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#00c8f0">
+</head>
+<body>
+
+  <!-- トップバー -->
+  <div class="top-bar">
+    <a href="test-ser.html" class="back-btn">← 戻る</a>
+    <div class="stage-badge" id="stageBadge"></div>
+    <button class="toggle-btn" id="toggleBtn">間違えた単語のみ</button>
+  </div>
+
+  <!-- 進捗 -->
+  <div class="progress-wrap">
+    <div class="progress-track">
+      <div class="progress-fill" id="progressFill"></div>
+    </div>
+    <div class="progress-label" id="progressLabel"></div>
+  </div>
+
+  <!-- カード -->
+  <div class="card-area">
+    <div class="card" id="card">
+      <div class="word-jp" id="wordJp"></div>
+      <div class="divider"></div>
+      <div class="word-en" id="wordEn"></div>
+    </div>
+  </div>
+
+  <!-- ナビ -->
+  <div class="nav-area">
+    <button class="nav-btn" id="prevBtn">◀</button>
+    <button class="nav-btn" id="nextBtn">▶</button>
+  </div>
+
+  <script src="test-ch.js"></script>
+</body>
+</html>

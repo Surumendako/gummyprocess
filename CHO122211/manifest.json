@@ -1,0 +1,22 @@
+{
+  "name": "TEST/テスト",
+  "short_name": "TEST",
+  "description": "開発中の英単語学習サイト",
+  "start_url": "/TEST-POPI/THE-POPI-TEST/index.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#4CAF50",
+  "icons": [
+    {
+      "src": "./pic/icon/TEST.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "./pic/icon/TEST.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
+
