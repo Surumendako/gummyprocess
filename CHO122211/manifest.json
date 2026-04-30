@@ -1,8 +1,8 @@
 {
-  "name": "TEST/テスト",
-  "short_name": "TEST",
-  "description": "開発中の英単語学習サイト",
-  "start_url": "/TEST-POPI/THE-POPI-TEST/index.html",
+  "name": "Do you want gummy?",
+  "short_name": "",
+  "description": "",
+  "start_url": "/gummyprocess/CHO122211/index.html",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#4CAF50",
